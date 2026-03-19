@@ -9,22 +9,11 @@ Focus on:
 - unnecessary abstractions, indirection, or cleverness
 - whether the code could be made meaningfully simpler without changing behavior
 
-Scoring guidance:
-- 90-100: simple, direct, low cognitive overhead
-- 70-89: acceptable complexity, some parts could be simplified
-- 40-69: several complex or over-engineered areas
-- 0-39: high complexity, deep nesting, hard to reason about
+Scoring guidance (0-10):
+- 9-10: simple, direct, low cognitive overhead
+- 7-8: acceptable complexity, some parts could be simplified
+- 5-6: several complex or over-engineered areas
+- 3-4: high complexity, deep nesting, hard to reason about
+- 0-2: severely complex, unmaintainable
 
-Return JSON in this exact shape:
-{
-  "score": 0,
-  "issues": [
-    {
-      "title": "",
-      "severity": "low|medium|high",
-      "reason": ""
-    }
-  ],
-  "summary": ""
-}
-
+Return JSON using the standard dimension schema from 01-system.txt with category "simplicity".

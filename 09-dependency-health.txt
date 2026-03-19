@@ -1,0 +1,27 @@
+Evaluate the dependency health of this repository.
+
+Focus on:
+- number of dependencies relative to project scope
+- presence of known deprecated or abandoned dependencies
+- lock file presence and consistency (package-lock.json, yarn.lock, etc.)
+- dependency scope correctness (dev vs production)
+- version pinning strategy (exact, range, or unpinned)
+- duplicate or redundant dependencies
+- supply chain risk indicators (very new packages, single-maintainer critical deps)
+- whether dependencies are actively maintained
+- whether unused dependencies are present
+
+Important:
+- Base your assessment on visible manifests (package.json, requirements.txt,
+  go.mod, Cargo.toml, etc.) and lock files.
+- Do not run audit tools; assess from the manifest contents.
+- If no dependency manifest is visible, score conservatively and explain.
+
+Scoring guidance (0-10):
+- 9-10: lean, well-maintained, properly scoped and pinned dependencies
+- 7-8: reasonable dependencies with minor issues (a few unpinned or stale)
+- 5-6: some concern — redundant, outdated, or poorly scoped dependencies
+- 3-4: notable dependency issues, missing lock files, abandoned packages
+- 0-2: severe issues, no manifest, or critically vulnerable dependencies
+
+Return JSON using the standard dimension schema from 01-system.txt with category "dependency_health".

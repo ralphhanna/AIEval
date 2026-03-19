@@ -1,0 +1,29 @@
+Evaluate the in-code documentation and naming conventions of this repository.
+
+Focus on:
+- naming clarity: do variable, function, class, and file names convey intent?
+- consistency of naming style (camelCase, snake_case, PascalCase) within the codebase
+- avoidance of ambiguous, single-letter, or overly abbreviated names
+- meaningful parameter and return-value names
+- JSDoc / docstrings / type annotations on public APIs and non-trivial functions
+- inline comments that explain "why" rather than restating "what"
+- absence of misleading, outdated, or redundant comments
+- README and high-level documentation that orient a new contributor
+- module-level or file-level comments where purpose is not obvious from context
+- consistent use of domain terminology throughout the codebase
+
+Important:
+- Good naming often reduces the need for comments. Reward code that is
+  self-documenting through clear names over code that relies on heavy commenting.
+- Penalize misleading names more than missing comments.
+- Do not reward boilerplate or auto-generated documentation that adds no value.
+- If the repository has no public API surface, focus on internal readability.
+
+Scoring guidance (0-10):
+- 9-10: consistently clear names, meaningful documentation where needed, self-documenting code
+- 7-8: mostly clear naming with minor inconsistencies, adequate documentation
+- 5-6: mixed — some clear areas, some cryptic names or missing documentation
+- 3-4: frequently unclear names, minimal or misleading comments, poor readability
+- 0-2: pervasive unclear naming, no documentation, actively misleading identifiers
+
+Return JSON using the standard dimension schema from 01-system.txt with category "documentation".

@@ -1,0 +1,20 @@
+Evaluate the logging and observability quality of this code.
+
+Focus on:
+- whether important events are logged
+- whether failures are logged
+- whether logs contain useful operational context
+- whether logs are too noisy or too sparse
+- whether logs help debugging and incident response
+- whether sensitive or risky data may be logged
+- whether logging is placed at the right boundaries
+- whether structured logging is used where appropriate
+
+Scoring guidance (0-10):
+- 9-10: useful, selective, safe, operationally valuable logging
+- 7-8: generally helpful logging with some gaps
+- 5-6: weak, noisy, sparse, or inconsistent logging
+- 3-4: minimal logging, little operational visibility
+- 0-2: no logging, or logging that is risky or useless
+
+Return JSON using the standard dimension schema from 01-system.txt with category "logging".

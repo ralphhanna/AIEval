@@ -1,0 +1,27 @@
+Evaluate the security posture of this code.
+
+Focus on:
+- input sanitization and injection prevention (SQL injection, XSS, command injection)
+- authentication and authorization patterns
+- secrets management (hardcoded credentials, API keys, tokens in source)
+- dependency vulnerability exposure (known insecure patterns or libraries)
+- CORS, CSRF, and HTTP header security configuration
+- data exposure in logs, error messages, or API responses
+- encryption usage for sensitive data at rest and in transit
+- file system access patterns and path traversal risks
+- use of eval, dynamic code execution, or unsafe deserialization
+
+Important:
+- If the repository has no web-facing surface, evaluate applicable security
+  concerns (secrets, dependency risk, input validation) and note reduced scope.
+- If evidence for a specific area is missing, state so and lower confidence
+  rather than assuming it is handled elsewhere.
+
+Scoring guidance (0-10):
+- 9-10: no visible vulnerabilities, deliberate security practices, secrets managed safely
+- 7-8: generally secure with minor gaps or missing hardening
+- 5-6: some security concerns present, inconsistent practices
+- 3-4: notable vulnerabilities or missing basic protections
+- 0-2: serious security issues, secrets in source, no input validation
+
+Return JSON using the standard dimension schema from 01-system.txt with category "security".

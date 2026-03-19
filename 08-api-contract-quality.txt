@@ -1,0 +1,27 @@
+Evaluate the API and contract quality of this code.
+
+Focus on:
+- API surface consistency (naming conventions, HTTP methods, status codes)
+- request and response validation and schema enforcement
+- versioning strategy for public interfaces
+- error response format consistency
+- documentation of contracts (OpenAPI/Swagger, type exports, JSDoc)
+- breaking change risk in public interfaces
+- backward compatibility patterns
+- whether interfaces are narrow and well-defined or broad and leaky
+
+Important:
+- For libraries, evaluate the public API exports and type contracts.
+- For CLI tools, evaluate the command interface and option handling.
+- For backend services, evaluate REST/GraphQL endpoint design.
+- If the repository has no public API surface, note this limitation,
+  evaluate internal module interfaces instead, and lower confidence.
+
+Scoring guidance (0-10):
+- 9-10: consistent, well-documented, validated interfaces with clear contracts
+- 7-8: reasonable interfaces with some inconsistency or documentation gaps
+- 5-6: mixed quality, some validation missing, inconsistent patterns
+- 3-4: poor interface design, no validation, breaking change risk
+- 0-2: no discernible API design, no contracts, no documentation
+
+Return JSON using the standard dimension schema from 01-system.txt with category "api_contract_quality".

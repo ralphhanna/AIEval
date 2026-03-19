@@ -1,0 +1,48 @@
+{
+  "prompt_file": "05-error-handling",
+  "category": "error_handling",
+  "score": 6.3,
+  "summary": "Error handling is present, especially through Nest validation and guarded startup behavior, but the overall pattern is inconsistent. Some areas handle expected failures carefully, while others appear to fail silently or rely on broad fallback behavior.",
+  "strengths": [
+    "Global ValidationPipe with whitelist and forbidNonWhitelisted is a solid baseline for request validation.",
+    "Feature flags and configuration defaults show defensive intent during startup.",
+    "Some operational issues are actively tracked in the repository."
+  ],
+  "weaknesses": [
+    "Silent failure paths reduce debuggability.",
+    "Fallback behavior sometimes masks configuration issues instead of surfacing them clearly.",
+    "Operational bugs in portfolio and cache paths suggest error handling is not consistently robust."
+  ],
+  "findings": [
+    {
+      "severity": "low",
+      "title": "Strong API input validation baseline",
+      "description": "main.ts enables ValidationPipe with forbidNonWhitelisted, whitelist, and transform.",
+      "evidence": [
+        "apps/api/src/main.ts"
+      ]
+    },
+    {
+      "severity": "medium",
+      "title": "Fallbacks suppress malformed LOG_LEVELS input",
+      "description": "main.ts parses LOG_LEVELS inside a try/catch and silently falls back without reporting invalid configuration.",
+      "evidence": [
+        "apps/api/src/main.ts"
+      ]
+    },
+    {
+      "severity": "medium",
+      "title": "Recent production bugs show fragile failure paths",
+      "description": "Open issues report infinite loading states and calculation problems in portfolio flows, indicating some failure scenarios still escape clean handling.",
+      "evidence": [
+        "issues #4299, #6229, #5006"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Log configuration parse failures and other fallback events at startup.",
+    "Add explicit domain-level error mapping for cache, portfolio, and import flows.",
+    "Expand automated tests for malformed inputs and downstream service failures."
+  ],
+  "confidence": "medium"
+}

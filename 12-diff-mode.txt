@@ -1,0 +1,44 @@
+You are re-evaluating a repository that was previously assessed.
+
+Inputs:
+- Previous evaluation JSON ({{PREVIOUS_EVALUATION_JSON}})
+- Diff of changes since previous evaluation ({{DIFF}})
+
+Instructions:
+- Focus only on dimensions affected by the changes in the diff.
+- For unaffected dimensions, carry forward the previous score and note "no change".
+- For affected dimensions, re-score based on the updated code.
+- Compare old and new scores explicitly.
+- Highlight improvements and regressions.
+- Do not re-evaluate the entire codebase; only assess what changed.
+- Use the same 0-10 scoring scale as the original evaluation.
+
+Return JSON in this exact shape:
+{
+  "mode": "diff",
+  "previous_overall_score": 0,
+  "new_overall_score": 0,
+  "confidence": "high|medium|low",
+  "dimensions_changed": [
+    {
+      "category": "",
+      "previous_score": 0,
+      "new_score": 0,
+      "confidence": "high|medium|low",
+      "change_summary": "",
+      "findings": [
+        {
+          "title": "",
+          "severity": "low|medium|high",
+          "description": "",
+          "affected_files": [""],
+          "rationale": ""
+        }
+      ]
+    }
+  ],
+  "dimensions_unchanged": [""],
+  "improvements": [""],
+  "regressions": [""],
+  "summary": ""
+}

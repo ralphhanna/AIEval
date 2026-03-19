@@ -1,0 +1,34 @@
+Evaluate the resilience of this code: both error handling and exception handling.
+
+Focus on:
+
+Error handling:
+- validation of inputs
+- handling of null, undefined, empty, invalid, and unexpected states
+- handling of failed operations
+- whether failures are ignored silently
+- whether callers receive useful error outcomes
+- whether recovery, fallback, or early failure is handled deliberately
+- whether the code anticipates realistic operational failure paths
+
+Exception handling:
+- use of try/catch blocks
+- whether exceptions are swallowed (empty catch blocks)
+- whether exceptions are rethrown, wrapped, or propagated correctly
+- whether exception messages preserve debugging value
+- whether broad catch blocks hide root causes
+- whether thrown exceptions are deliberate and useful
+- whether exception behavior is consistent and predictable
+
+Note: avoid double-counting the same issue as both an error handling
+and exception handling problem. Each finding should be reported once
+under whichever aspect it most belongs to.
+
+Scoring guidance (0-10):
+- 9-10: realistic failure cases are anticipated, exceptions are handled deliberately with useful context
+- 7-8: generally solid with some gaps in failure or exception handling
+- 5-6: several missing failure paths or inconsistent exception patterns
+- 3-4: weak, silent, or careless error/exception handling
+- 0-2: swallowed exceptions, hidden root causes, no error strategy
+
+Return JSON using the standard dimension schema from 01-system.txt with category "resilience".

@@ -91,13 +91,13 @@ Ghostfolio shows a solid production-oriented architecture foundation, especially
 
 This evaluation is conservative and evidence-based. It uses the AI-Eval prompt set and publicly visible repository sources, but it does not claim results from executing the test suite or measuring real coverage.
 
-![Bar chart](bar-chart-Ghostfolio.png)
+![Bar chart](docs/bar-chart-Ghostfolio.png)
 
 ---------------------
 
 # Example Output for Exception Handling Evaluation
 
-![screenshot of ChatGPT results](chatGPT-results.png)
+![screenshot of ChatGPT results](docs/chatGPT-results.png)
 # 06 Exception Handling Evaluation
 
 **Score:** 58/100

@@ -1,0 +1,78 @@
+You are combining multiple code review dimension results into one final evaluation.
+
+Inputs may include:
+- simplicity
+- design_quality
+- test_quality
+- resilience
+- logging
+- security
+- api_contract_quality
+- dependency_health
+- documentation
+
+Default relative weights:
+  simplicity:            10%
+  design_quality:        18%
+  test_quality:          18%
+  resilience:            13%
+  logging:                5%
+  security:              13%
+  api_contract_quality:    8%
+  dependency_health:       5%
+  documentation:          10%
+
+Adjust weights if a dimension is not applicable to the repository
+(e.g., redistribute api_contract_quality weight for repos with no API surface).
+State which weights you used in the output.
+
+Instructions:
+- Do not average blindly. Apply the weights above as a starting point.
+- Penalize weak test quality and weak resilience meaningfully.
+- Penalize weak security more than weak logging.
+- Penalize weak design more than weak dependency health.
+- Reward consistency across dimensions.
+- If one dimension is critically weak (score <= 3), reflect that in the overall score and summary.
+- If a dimension has low confidence, reduce its weight contribution.
+- Base the result only on the provided dimension scores and findings.
+
+Return JSON in this exact shape:
+{
+  "overall_score": 0,
+  "dimension_scores": {
+    "simplicity": 0,
+    "design_quality": 0,
+    "test_quality": 0,
+    "resilience": 0,
+    "logging": 0,
+    "security": 0,
+    "api_contract_quality": 0,
+    "dependency_health": 0,
+    "documentation": 0
+  },
+  "weights_used": {
+    "simplicity": 0.10,
+    "design_quality": 0.18,
+    "test_quality": 0.18,
+    "resilience": 0.13,
+    "logging": 0.05,
+    "security": 0.13,
+    "api_contract_quality": 0.08,
+    "dependency_health": 0.05,
+    "documentation": 0.10
+  },
+  "confidence": "high|medium|low",
+  "top_issues": [
+    {
+      "title": "",
+      "severity": "low|medium|high",
+      "dimension": "",
+      "reason": ""
+    }
+  ],
+  "recommended_fixes": [""],
+  "summary": ""
+}
+
+Inputs:
+{{DIMENSION_RESULTS_JSON}}

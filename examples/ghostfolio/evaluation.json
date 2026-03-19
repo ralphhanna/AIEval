@@ -1,0 +1,380 @@
+{
+  "repo": {
+    "name": "ghostfolio",
+    "url": "https://github.com/ghostfolio/ghostfolio",
+    "evaluation_framework": "https://github.com/ralphhanna/AI-Eval",
+    "evaluated_at": "2026-03-19",
+    "notes": "Prompt-based evaluation following AI-Eval instruction.txt and category prompts 02-08."
+  },
+  "scores": {
+    "simplicity": 6.8,
+    "design_quality": 7.8,
+    "test_quality": 7.2,
+    "error_handling": 6.3,
+    "exception_handling": 5.6,
+    "logging": 5.4,
+    "aggregate": 6.6
+  },
+  "categories": [
+    {
+      "prompt_file": "02-simplicity",
+      "category": "simplicity",
+      "score": 6.8,
+      "summary": "Ghostfolio is understandable at the repo level, but several core API paths concentrate too much behavior in single files and heavy bootstrap/module composition makes local reasoning harder than it should be.",
+      "strengths": [
+        "Clear top-level workspace organization with apps, libs, prisma, docker, and tools.",
+        "Consistent Nx task scripts make common workflows predictable.",
+        "Use of Nest modules and Angular/Nx conventions reduces accidental complexity in many areas."
+      ],
+      "weaknesses": [
+        "Very large orchestration points reduce readability and make changes riskier.",
+        "Startup and static-serving logic mixes configuration, security, localization, and redirect behavior.",
+        "Feature-rich monorepo setup increases the amount of context needed for small changes."
+      ],
+      "findings": [
+        {
+          "severity": "medium",
+          "title": "Oversized portfolio controller",
+          "description": "The portfolio controller is 674 lines / 618 LOC, which is too much surface area for a single controller and suggests multiple responsibilities.",
+          "evidence": [
+            "apps/api/src/app/portfolio/portfolio.controller.ts"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Dense root module composition",
+          "description": "AppModule wires a long list of modules plus conditional Bull Board, Redis, and static-server configuration in one file, making startup behavior harder to reason about.",
+          "evidence": [
+            "apps/api/src/app/app.module.ts"
+          ]
+        },
+        {
+          "severity": "low",
+          "title": "Nx monorepo scripts are broad but coherent",
+          "description": "The package.json scripts are extensive, but they stay aligned around Nx targets for build, lint, test, serve, and workspace management.",
+          "evidence": [
+            "package.json"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Split portfolio.controller.ts into narrower controllers or endpoint-focused modules.",
+        "Move static redirect, Accept-Language handling, and feature-flag setup into dedicated providers or middleware.",
+        "Document the intended ownership boundaries between apps/api, apps/client, libs, and services more explicitly."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "prompt_file": "03-design-quality",
+      "category": "design_quality",
+      "score": 7.8,
+      "summary": "The overall architecture is strong: Ghostfolio uses a well-organized Nx workspace, a NestJS backend, Angular frontend, Prisma, Redis, and modular feature packaging. The main design weakness is that some modules and controllers have grown too large at the edges.",
+      "strengths": [
+        "The repo is explicitly organized as an Nx workspace with separate backend and frontend concerns.",
+        "Modular NestJS design is visible through many feature modules and service modules.",
+        "Shared infrastructure like Prisma, configuration, queues, and caching is separated into distinct modules."
+      ],
+      "weaknesses": [
+        "Some edge modules appear to absorb too many concerns over time.",
+        "Conditional composition in AppModule makes the composition root heavy.",
+        "Large files indicate erosion of single-responsibility boundaries in high-traffic areas."
+      ],
+      "findings": [
+        {
+          "severity": "low",
+          "title": "Strong workspace structure",
+          "description": "The repo exposes apps, libs, prisma, docker, test/import, and tools directories, which is a healthy split for a full-stack Nx application.",
+          "evidence": [
+            "repo root"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "AppModule is a heavy composition root",
+          "description": "The root module imports many application modules and also embeds conditional queue UI configuration, Redis settings, static file rules, and redirect logic.",
+          "evidence": [
+            "apps/api/src/app/app.module.ts"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Architecture is modular but not consistently thin",
+          "description": "The existence of very large controller files suggests that module boundaries exist but are not always enforced inside features.",
+          "evidence": [
+            "apps/api/src/app/portfolio/portfolio.controller.ts"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Refactor oversized feature controllers/services behind thinner endpoint handlers and dedicated application services.",
+        "Keep AppModule focused on composition and move complex static-serving and request-routing behavior into isolated components.",
+        "Add lightweight architecture notes for the main backend domains and shared libraries."
+      ],
+      "confidence": "high"
+    },
+    {
+      "prompt_file": "04-test-quality",
+      "category": "test_quality",
+      "score": 7.2,
+      "summary": "Ghostfolio has meaningful automated test infrastructure and evidence of substantial API-domain testing. The main concern is not absence of tests, but uneven confidence caused by concentration around selected areas and lack of visible coverage reporting in the inspected material.",
+      "strengths": [
+        "Nx/Jest test orchestration is set up cleanly across the workspace.",
+        "The repo exposes dedicated test scripts for all projects and targeted test execution.",
+        "At least one inspected portfolio calculator spec is substantial and uses realistic dependency mocking."
+      ],
+      "weaknesses": [
+        "The inspected evidence does not show explicit coverage thresholds or coverage enforcement.",
+        "Large, heavily mocked tests can still leave integration gaps.",
+        "Visible test strength is stronger in some backend calculation areas than in observability or failure-path validation."
+      ],
+      "findings": [
+        {
+          "severity": "low",
+          "title": "Workspace-wide Jest integration exists",
+          "description": "Jest is configured through Nx, and the root jest config delegates to getJestProjectsAsync().",
+          "evidence": [
+            "jest.config.ts"
+          ]
+        },
+        {
+          "severity": "low",
+          "title": "Convenient test scripts exist",
+          "description": "package.json includes workspace-wide test, project-specific tests, watch mode, and single-test execution.",
+          "evidence": [
+            "package.json"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Evidence of substantial domain tests",
+          "description": "The inspected portfolio calculator spec includes many mocked services and a long test body, indicating serious effort around financial-calculation behavior.",
+          "evidence": [
+            "apps/api/src/app/portfolio/calculator/roai/portfolio-calculator-cash.spec.ts"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Add or expose coverage thresholds in CI so test quality is enforced, not just present.",
+        "Increase targeted tests for failure paths, cache failures, and exception propagation.",
+        "Add a small number of higher-level integration tests around key API flows to complement mocked unit tests."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "prompt_file": "05-error-handling",
+      "category": "error_handling",
+      "score": 6.3,
+      "summary": "Error handling is present, especially through Nest validation and guarded startup behavior, but the overall pattern is inconsistent. Some areas handle expected failures carefully, while others appear to fail silently or rely on broad fallback behavior.",
+      "strengths": [
+        "Global ValidationPipe with whitelist and forbidNonWhitelisted is a solid baseline for request validation.",
+        "Feature flags and configuration defaults show defensive intent during startup.",
+        "Some operational issues are actively tracked in the repository."
+      ],
+      "weaknesses": [
+        "Silent failure paths reduce debuggability.",
+        "Fallback behavior sometimes masks configuration issues instead of surfacing them clearly.",
+        "Operational bugs in portfolio and cache paths suggest error handling is not consistently robust."
+      ],
+      "findings": [
+        {
+          "severity": "low",
+          "title": "Strong API input validation baseline",
+          "description": "main.ts enables ValidationPipe with forbidNonWhitelisted, whitelist, and transform.",
+          "evidence": [
+            "apps/api/src/main.ts"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Fallbacks suppress malformed LOG_LEVELS input",
+          "description": "main.ts parses LOG_LEVELS inside a try/catch and silently falls back without reporting invalid configuration.",
+          "evidence": [
+            "apps/api/src/main.ts"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Recent production bugs show fragile failure paths",
+          "description": "Open issues report infinite loading states and calculation problems in portfolio flows, indicating some failure scenarios still escape clean handling.",
+          "evidence": [
+            "issues #4299, #6229, #5006"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Log configuration parse failures and other fallback events at startup.",
+        "Add explicit domain-level error mapping for cache, portfolio, and import flows.",
+        "Expand automated tests for malformed inputs and downstream service failures."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "prompt_file": "06-exception-handling",
+      "category": "exception_handling",
+      "score": 5.6,
+      "summary": "Exception handling is the weakest technical area in the visible evidence. There are multiple silent catch blocks and at least one documented Redis-related crash, which indicates that exception paths are not consistently surfaced or normalized.",
+      "strengths": [
+        "NestJS provides a framework that can support clean exception handling patterns.",
+        "Some recent bugs have been recognized and discussed publicly, which helps drive remediation."
+      ],
+      "weaknesses": [
+        "Silent catch blocks swallow exceptions without logging or remediation.",
+        "Exception behavior appears uneven across infrastructure and startup paths.",
+        "Operational exception paths around Redis have already caused application crashes."
+      ],
+      "findings": [
+        {
+          "severity": "high",
+          "title": "Silent catch in startup config parsing",
+          "description": "main.ts catches JSON parsing errors for LOG_LEVELS and does nothing with the exception.",
+          "evidence": [
+            "apps/api/src/main.ts"
+          ]
+        },
+        {
+          "severity": "high",
+          "title": "Silent catch in Accept-Language processing",
+          "description": "AppModule catches parsing errors when reading Accept-Language for redirects and suppresses them entirely.",
+          "evidence": [
+            "apps/api/src/app/app.module.ts"
+          ]
+        },
+        {
+          "severity": "high",
+          "title": "Redis exception path previously crashed the app",
+          "description": "Issue #4822 documents an application crash caused by an exception in @keyv/redis inside the Redis cache service.",
+          "evidence": [
+            "issue #4822"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Eliminate empty catch blocks; at minimum log the exception and the fallback path used.",
+        "Standardize exception translation for infrastructure services such as Redis, Prisma, and external data providers.",
+        "Add regression tests specifically for previously reported exception bugs."
+      ],
+      "confidence": "high"
+    },
+    {
+      "prompt_file": "07-logging",
+      "category": "logging",
+      "score": 5.4,
+      "summary": "Ghostfolio has baseline logging through Nest and startup banners, but the visible code does not suggest deep observability. Logging appears functional rather than structured, and silent catches directly undermine diagnosis.",
+      "strengths": [
+        "Startup logging is configurable through LOG_LEVELS and environment-dependent defaults.",
+        "Nest logger integration gives a standard baseline."
+      ],
+      "weaknesses": [
+        "Silent catch blocks erase important operational context.",
+        "The inspected evidence does not show structured correlation, metrics, or tracing patterns.",
+        "Recent bug reports still rely heavily on user-provided logs, suggesting observability could be stronger."
+      ],
+      "findings": [
+        {
+          "severity": "medium",
+          "title": "Logging is configurable but basic",
+          "description": "main.ts derives log levels from configuration and falls back to a production/development default set.",
+          "evidence": [
+            "apps/api/src/main.ts"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Silent exception handling weakens logs",
+          "description": "Empty catch blocks remove the very information logs should surface during config and request processing failures.",
+          "evidence": [
+            "apps/api/src/main.ts",
+            "apps/api/src/app/app.module.ts"
+          ]
+        },
+        {
+          "severity": "low",
+          "title": "Observed issue workflow depends on raw logs",
+          "description": "Several bug reports cite manual server logs instead of richer operational diagnostics, which is normal but suggests limited observability tooling from the visible repo surface.",
+          "evidence": [
+            "issues #4299, #5924, #5006"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Introduce structured logging around cache failures, external provider failures, and portfolio recalculation paths.",
+        "Log suppressed fallback events with enough context to diagnose bad configuration and malformed headers.",
+        "Consider adding request correlation IDs and a small observability guide for self-hosted operators."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "prompt_file": "08-aggregate",
+      "category": "aggregate",
+      "score": 6.6,
+      "summary": "Ghostfolio is a mature and substantial full-stack project with a strong modular foundation and credible automated testing, but it is being held back by oversized orchestration files, uneven exception handling, and modest observability. The core architecture is good; the main risk is operational maintainability at the edges.",
+      "strengths": [
+        "Strong Nx full-stack architecture with clear separation of backend, frontend, and shared concerns.",
+        "Real test infrastructure and evidence of substantial business-logic tests.",
+        "Good baseline request validation and deployment guidance."
+      ],
+      "weaknesses": [
+        "Exception handling quality is inconsistent and sometimes silent.",
+        "Logging/observability is serviceable but thin.",
+        "Complex feature areas have grown into oversized controllers/composition files."
+      ],
+      "findings": [
+        {
+          "severity": "high",
+          "title": "Architecture is sound, but hotspots are too large",
+          "description": "Repo-level design is strong, yet controller/composition hotspots weaken maintainability and clarity.",
+          "evidence": [
+            "apps/api/src/app/portfolio/portfolio.controller.ts",
+            "apps/api/src/app/app.module.ts"
+          ]
+        },
+        {
+          "severity": "high",
+          "title": "Exception handling needs hardening",
+          "description": "Silent catches and a documented Redis crash show a pattern that should be addressed before calling the system highly robust.",
+          "evidence": [
+            "apps/api/src/main.ts",
+            "apps/api/src/app/app.module.ts",
+            "issue #4822"
+          ]
+        },
+        {
+          "severity": "medium",
+          "title": "Testing is a real strength but should cover more failure behavior",
+          "description": "There is meaningful unit-test infrastructure, but more regression tests for operational failures would materially improve confidence.",
+          "evidence": [
+            "jest.config.ts",
+            "package.json",
+            "portfolio-calculator-cash.spec.ts"
+          ]
+        }
+      ],
+      "recommendations": [
+        "Refactor oversized API hotspots into thinner controllers/services with narrower responsibilities.",
+        "Remove empty catch blocks and standardize infrastructure exception handling.",
+        "Strengthen structured logging and failure-path tests for cache, import, and portfolio-calculation flows."
+      ],
+      "confidence": "high"
+    }
+  ],
+  "priority_actions": [
+    {
+      "priority": 1,
+      "title": "Harden exception handling and remove silent catches",
+      "description": "Replace empty catch blocks with explicit logging, fallback rationale, and where needed domain-safe exception translation for Redis, config, and request-processing paths.",
+      "expected_impact": "high"
+    },
+    {
+      "priority": 2,
+      "title": "Refactor oversized portfolio/controller hotspots",
+      "description": "Split large API entrypoints and orchestration files into narrower modules and dedicated services to reduce cognitive load and change risk.",
+      "expected_impact": "high"
+    },
+    {
+      "priority": 3,
+      "title": "Improve observability and failure-path tests",
+      "description": "Add structured logs plus targeted regression tests around cache failures, invalid configuration, and portfolio-calculation edge cases.",
+      "expected_impact": "high"
+    }
+  ]
+}

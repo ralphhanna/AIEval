@@ -1,0 +1,48 @@
+{
+  "prompt_file": "04-test-quality",
+  "category": "test_quality",
+  "score": 7.2,
+  "summary": "Ghostfolio has meaningful automated test infrastructure and evidence of substantial API-domain testing. The main concern is not absence of tests, but uneven confidence caused by concentration around selected areas and lack of visible coverage reporting in the inspected material.",
+  "strengths": [
+    "Nx/Jest test orchestration is set up cleanly across the workspace.",
+    "The repo exposes dedicated test scripts for all projects and targeted test execution.",
+    "At least one inspected portfolio calculator spec is substantial and uses realistic dependency mocking."
+  ],
+  "weaknesses": [
+    "The inspected evidence does not show explicit coverage thresholds or coverage enforcement.",
+    "Large, heavily mocked tests can still leave integration gaps.",
+    "Visible test strength is stronger in some backend calculation areas than in observability or failure-path validation."
+  ],
+  "findings": [
+    {
+      "severity": "low",
+      "title": "Workspace-wide Jest integration exists",
+      "description": "Jest is configured through Nx, and the root jest config delegates to getJestProjectsAsync().",
+      "evidence": [
+        "jest.config.ts"
+      ]
+    },
+    {
+      "severity": "low",
+      "title": "Convenient test scripts exist",
+      "description": "package.json includes workspace-wide test, project-specific tests, watch mode, and single-test execution.",
+      "evidence": [
+        "package.json"
+      ]
+    },
+    {
+      "severity": "medium",
+      "title": "Evidence of substantial domain tests",
+      "description": "The inspected portfolio calculator spec includes many mocked services and a long test body, indicating serious effort around financial-calculation behavior.",
+      "evidence": [
+        "apps/api/src/app/portfolio/calculator/roai/portfolio-calculator-cash.spec.ts"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Add or expose coverage thresholds in CI so test quality is enforced, not just present.",
+    "Increase targeted tests for failure paths, cache failures, and exception propagation.",
+    "Add a small number of higher-level integration tests around key API flows to complement mocked unit tests."
+  ],
+  "confidence": "medium"
+}
