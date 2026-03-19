@@ -91,3 +91,41 @@ Ghostfolio shows a solid production-oriented architecture foundation, especially
 
 This evaluation is conservative and evidence-based. It uses the AI-Eval prompt set and publicly visible repository sources, but it does not claim results from executing the test suite or measuring real coverage.
 
+![Bar chart](bar-chart-Ghostfolio.png)
+
+---------------------
+
+# Example Output for Exception Handling Evaluation
+
+![screenshot of ChatGPT results](chatGPT-results.png)
+# 06 Exception Handling Evaluation
+
+**Score:** 58/100
+
+## Summary
+
+Exception handling is the weakest technical area in the evidence reviewed. There are signs of deliberate exception use in health-check logic, but the repeated empty catches materially reduce debugging value and can hide root causes.
+
+## Strengths
+
+- Some exception paths use explicit error messages.
+- Health-check flow preserves intent before degrading to false.
+- Exception usage is not reckless everywhere; it is just inconsistent.
+
+## Weaknesses
+
+- Exceptions are swallowed in several places
+- Some exceptions preserve intent
+- Context preservation is inconsistent
+
+## Findings
+
+- **Exceptions are swallowed in several places** (high): Bootstrap, static serving logic, and Redis helper code contain empty catch blocks, which hide root causes and make exception behavior less predictable.
+- **Some exceptions preserve intent** (low): The Redis health check throws explicit mismatch and timeout errors before converting them into a logged unhealthy result.
+- **Context preservation is inconsistent** (medium): Some failures are logged or re-expressed clearly, while others are suppressed entirely, creating uneven debugging value.
+
+## Recommendations
+
+- Eliminate empty catch blocks unless there is a documented reason to suppress a failure.
+- Wrap or rethrow exceptions with contextual information where recovery is not possible.
+- Adopt a consistent exception policy for bootstrap, cache, and request-serving code.
