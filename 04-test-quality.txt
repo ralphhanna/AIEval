@@ -1,0 +1,38 @@
+Evaluate the test quality of this module.
+
+Focus on:
+- whether main behaviors appear to be tested
+- whether edge cases are tested
+- whether failure paths are tested
+- whether assertions are meaningful
+- whether tests are shallow, redundant, brittle, or missing
+- whether tests describe intent clearly
+- whether the tests would catch realistic regressions
+
+Important:
+- If no test code is provided, score conservatively and explain the gap.
+- Do not claim exact line coverage or branch coverage unless explicitly provided by the input.
+- Judge likely test strength only from the code shown.
+
+Scoring guidance:
+- 90-100: strong tests covering normal, edge, and failure behavior
+- 70-89: decent tests with some meaningful gaps
+- 40-69: partial or weak tests
+- 0-39: missing tests or tests too weak to trust
+
+Return JSON in this exact shape:
+{
+  "score": 0,
+  "issues": [
+    {
+      "title": "",
+      "severity": "low|medium|high",
+      "reason": ""
+    }
+  ],
+  "missing_cases": [
+    ""
+  ],
+  "summary": ""
+}
+

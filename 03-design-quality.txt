@@ -1,0 +1,30 @@
+Evaluate the design quality of this code.
+
+Focus on:
+- separation of concerns
+- coupling between responsibilities
+- cohesion within functions, classes, and modules
+- whether boundaries are clean or blurred
+- whether the structure supports future change
+- whether logic is placed at the right level of abstraction
+- whether the code mixes validation, orchestration, persistence, formatting, networking, or UI concerns in the same place
+
+Scoring guidance:
+- 90-100: strong structure, clear boundaries, good separation of concerns
+- 70-89: reasonable structure with some design weaknesses
+- 40-69: noticeable coupling or mixed responsibilities
+- 0-39: poor structure, blurred boundaries, hard to evolve safely
+
+Return JSON in this exact shape:
+{
+  "score": 0,
+  "issues": [
+    {
+      "title": "",
+      "severity": "low|medium|high",
+      "reason": ""
+    }
+  ],
+  "summary": ""
+}
+

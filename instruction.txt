@@ -1,0 +1,6 @@
+Claude Instructions:
+-------------------
+For every file in this folder &/quality, go through as a prompt against current project.
+Produce an output as json file with same name as the prompt file name
+Produce on .md file of the out 
+Produce a detailed .md file for each recommendation, with as many specific as possible

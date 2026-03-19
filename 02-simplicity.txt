@@ -1,0 +1,30 @@
+Evaluate the simplicity and complexity of this code.
+
+Focus on:
+- whether the solution is simpler than necessary
+- deep nesting
+- branching complexity
+- oversized functions
+- multiple responsibilities packed into one unit
+- unnecessary abstractions, indirection, or cleverness
+- whether the code could be made meaningfully simpler without changing behavior
+
+Scoring guidance:
+- 90-100: simple, direct, low cognitive overhead
+- 70-89: acceptable complexity, some parts could be simplified
+- 40-69: several complex or over-engineered areas
+- 0-39: high complexity, deep nesting, hard to reason about
+
+Return JSON in this exact shape:
+{
+  "score": 0,
+  "issues": [
+    {
+      "title": "",
+      "severity": "low|medium|high",
+      "reason": ""
+    }
+  ],
+  "summary": ""
+}
+
